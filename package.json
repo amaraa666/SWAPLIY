@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "expo-image-picker": "^55.0.19",
+    "expo-location": "^55.1.8",
+    "react-native-maps": "^1.27.2",
+    "react-native-picker-select": "^9.3.1"
+  }
+}
