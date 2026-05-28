@@ -393,17 +393,36 @@ export default function ProfileScreen() {
         onRequestClose={() => setShowPersonalInfoForm(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.modalCard}>
-            <Text style={styles.modalTitle}>Personal Info</Text>
+          <View style={styles.personalModalCard}>
+            <View style={styles.personalModalHeader}>
+              <View>
+                <Text style={styles.personalModalTitle}>Personal Info</Text>
+                <Text style={styles.personalModalSubtitle}>Update your profile details</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.personalModalCloseButton}
+                onPress={() => setShowPersonalInfoForm(false)}
+              >
+                <Ionicons name="close" size={18} color="#6B7280" />
+              </TouchableOpacity>
+            </View>
 
             <Image source={{ uri: editingPicture || 'https://via.placeholder.com/120' }} style={styles.profilePreviewImage} />
-                        <TouchableOpacity style={styles.imageUploadButton} onPress={handlePickProfileImage} disabled={uploadingProfileImage}>
+            <TouchableOpacity
+              style={styles.imageUploadButton}
+              onPress={handlePickProfileImage}
+              disabled={uploadingProfileImage}
+            >
               {uploadingProfileImage ? (
                 <ActivityIndicator size="small" color="#1ECE90" />
               ) : (
-                <Text style={styles.imageUploadButtonText}>Upload profile image</Text>
+                <View style={styles.uploadButtonContent}>
+                  <Ionicons name="image-outline" size={16} color="#047857" />
+                  <Text style={styles.imageUploadButtonText}>Change profile photo</Text>
+                </View>
               )}
             </TouchableOpacity>
+
             <Text style={styles.inputLabel}>Full name</Text>
             <TextInput
               style={styles.input}
@@ -428,10 +447,13 @@ export default function ProfileScreen() {
               keyboardType="numeric"
             />
             <View style={styles.modalActions}>
-              <TouchableOpacity style={styles.modalSecondaryButton} onPress={() => setShowPersonalInfoForm(false)}>
-                <Text style={styles.modalSecondaryButtonText}>Cancel</Text>
+              <TouchableOpacity
+                style={styles.personalModalSecondaryButton}
+                onPress={() => setShowPersonalInfoForm(false)}
+              >
+                <Text style={styles.personalModalSecondaryButtonText}>Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.modalPrimaryButton} onPress={handleSavePersonalInfo}>
+              <TouchableOpacity style={styles.personalModalPrimaryButton} onPress={handleSavePersonalInfo}>
                 <Text style={styles.modalPrimaryButtonText}>Save</Text>
               </TouchableOpacity>
             </View>
@@ -950,17 +972,22 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   imageUploadButton: {
-    backgroundColor: '#ECFDF5',
+    backgroundColor: '#F0FDF4',
     borderWidth: 1,
     borderColor: '#A7F3D0',
-    paddingVertical: 10,
-    borderRadius: 10,
+    paddingVertical: 11,
+    borderRadius: 12,
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 14,
+  },
+  uploadButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   imageUploadButtonText: {
-    color: '#065F46',
-    fontWeight: '600',
+    color: '#047857',
+    fontWeight: '700',
   },
   profilePreviewImage: {
     width: 96,
@@ -972,10 +999,11 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#D1D5DB',
-    borderRadius: 10,
+    borderColor: '#E5E7EB',
+    backgroundColor: '#F9FAFB',
+    borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 10,
+    paddingVertical: 11,
     marginBottom: 10,
     fontSize: 14,
     color: '#111827',
@@ -1081,5 +1109,57 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 10,
+  },
+  personalModalCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.14,
+    shadowRadius: 18,
+    elevation: 8,
+  },
+  personalModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+  },
+  personalModalTitle: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#111827',
+  },
+  personalModalSubtitle: {
+    fontSize: 13,
+    color: '#6B7280',
+    marginTop: 2,
+  },
+  personalModalCloseButton: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#F3F4F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  personalModalSecondaryButton: {
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 16,
+    paddingVertical: 11,
+    borderRadius: 12,
+  },
+  personalModalSecondaryButtonText: {
+    color: '#374151',
+    fontWeight: '700',
+  },
+  personalModalPrimaryButton: {
+    backgroundColor: '#1ECE90',
+    paddingHorizontal: 18,
+    paddingVertical: 11,
+    borderRadius: 12,
   },
 });

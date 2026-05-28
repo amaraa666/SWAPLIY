@@ -111,7 +111,7 @@ export default function ProductDetailScreen() {
   const canLike =
     user?.uid && product.sellerId !== user.uid && !product.likes?.includes(user.uid);
 
-  const tabBarReserve = 72;
+  const tabBarReserve = 16;
 
   return (
     <View style={styles.screen}>
@@ -132,7 +132,7 @@ export default function ProductDetailScreen() {
         contentContainerStyle={[
           styles.scrollContent,
           {
-            paddingBottom: Math.max(insets.bottom, 12) + (canLike ? tabBarReserve + 56 : tabBarReserve),
+            paddingBottom: canLike ? 110 + Math.max(insets.bottom, 8) : Math.max(insets.bottom, 12),
           },
         ]}
         showsVerticalScrollIndicator={false}
@@ -143,7 +143,8 @@ export default function ProductDetailScreen() {
           onSellerPress={navigateToUserProfile}
           mode="standalone"
         />
-         {canLike ? (
+      </ScrollView>
+      {canLike ? (
         <View
           style={[
             styles.likeBar,
@@ -166,9 +167,6 @@ export default function ProductDetailScreen() {
           </TouchableOpacity>
         </View>
       ) : null}
-      </ScrollView>
-
-     
     </View>
   );
 }
@@ -227,11 +225,15 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
   likeBar: {
-    marginTop: 20,
-    height: 200,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     paddingHorizontal: 20,
+    paddingTop: 10,
     backgroundColor: '#F3F4F6',
     borderTopColor: '#E5E7EB',
+    borderTopWidth: 1,
   },
   likeBtn: {
     flexDirection: 'row',

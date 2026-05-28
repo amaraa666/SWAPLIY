@@ -5,14 +5,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const categories = [
-  { label: 'All', value: null },
-  { label: 'Electronics', value: 'electronics' },
-  { label: 'Clothing', value: 'clothing' },
-  { label: 'Books', value: 'books' },
-  { label: 'Home & Garden', value: 'home' },
-  { label: 'Sports', value: 'sports' },
-  { label: 'Toys', value: 'toys' },
-  { label: 'Other', value: 'other' },
+  { label: 'All', value: null, icon: 'apps-outline' as const },
+  { label: 'Electronics', value: 'electronics', icon: 'phone-portrait-outline' as const },
+  { label: 'Clothing', value: 'clothing', icon: 'shirt-outline' as const },
+  { label: 'Books', value: 'books', icon: 'book-outline' as const },
+  { label: 'Home & Garden', value: 'home', icon: 'home-outline' as const },
+  { label: 'Sports', value: 'sports', icon: 'football-outline' as const },
+  { label: 'Toys', value: 'toys', icon: 'game-controller-outline' as const },
+  { label: 'Other', value: 'other', icon: 'grid-outline' as const },
 ];
 
 export default function FiltersScreen() {
@@ -54,6 +54,13 @@ export default function FiltersScreen() {
               style={[styles.item, isActive && styles.itemActive]}
               onPress={() => setSelectedCategory(item.value)}
             >
+              <View style={[styles.itemIconWrap, isActive && styles.itemIconWrapActive]}>
+                <Ionicons
+                  name={item.icon}
+                  size={18}
+                  color={isActive ? '#059669' : '#6B7280'}
+                />
+              </View>
               <Text style={[styles.itemText, isActive && styles.itemTextActive]}>{item.label}</Text>
             </TouchableOpacity>
           );
@@ -61,26 +68,35 @@ export default function FiltersScreen() {
       </View>
 
       <Text style={styles.sectionTitle}>Price range</Text>
-      <View style={styles.priceRow}>
-        <View style={styles.priceInputWrap}>
-          <Text style={styles.priceLabel}>Min</Text>
-          <TextInput
-            style={styles.priceInput}
-            placeholder="0"
-            keyboardType="numeric"
-            value={minInput}
-            onChangeText={setMinInput}
-          />
-        </View>
-        <View style={styles.priceInputWrap}>
-          <Text style={styles.priceLabel}>Max</Text>
-          <TextInput
-            style={styles.priceInput}
-            placeholder="1000"
-            keyboardType="numeric"
-            value={maxInput}
-            onChangeText={setMaxInput}
-          />
+      <View style={styles.priceCard}>
+        <View style={styles.priceRow}>
+          <View style={styles.priceInputWrap}>
+            <Text style={styles.priceLabel}>Minimum</Text>
+            <View style={styles.priceInputContainer}>
+              <Text style={styles.pricePrefix}>RM</Text>
+              <TextInput
+                style={styles.priceInput}
+                placeholder="0"
+                keyboardType="numeric"
+                value={minInput}
+                onChangeText={setMinInput}
+              />
+            </View>
+          </View>
+          <View style={styles.priceDivider} />
+          <View style={styles.priceInputWrap}>
+            <Text style={styles.priceLabel}>Maximum</Text>
+            <View style={styles.priceInputContainer}>
+              <Text style={styles.pricePrefix}>RM</Text>
+              <TextInput
+                style={styles.priceInput}
+                placeholder="1000"
+                keyboardType="numeric"
+                value={maxInput}
+                onChangeText={setMaxInput}
+              />
+            </View>
+          </View>
         </View>
       </View>
 
@@ -111,6 +127,8 @@ const styles = StyleSheet.create({
     color: '#1F2937',
   },
   list: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 10,
     marginBottom: 20,
   },
@@ -120,45 +138,85 @@ const styles = StyleSheet.create({
     color: '#1F2937',
     marginBottom: 10,
   },
-  priceRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
   priceInputWrap: {
     flex: 1,
   },
   priceLabel: {
-    fontSize: 12,
-    color: '#6B7280',
-    marginBottom: 6,
+    fontSize: 13,
+    color: '#4B5563',
+    marginBottom: 8,
     fontWeight: '600',
   },
-  priceInput: {
+  priceCard: {
     backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    padding: 12,
+  },
+  priceRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 10,
+  },
+  priceDivider: {
+    width: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 6,
+  },
+  priceInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F9FAFB',
     borderWidth: 1,
     borderColor: '#E5E7EB',
     borderRadius: 12,
     paddingHorizontal: 12,
-    paddingVertical: 10,
+  },
+  pricePrefix: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#6B7280',
+    marginRight: 6,
+  },
+  priceInput: {
+    flex: 1,
+    paddingVertical: 12,
     color: '#1F2937',
     fontSize: 14,
   },
   item: {
+    width: '48%',
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 14,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
     borderWidth: 1,
     borderColor: '#E5E7EB',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   itemActive: {
     borderColor: '#1ECE90',
     backgroundColor: '#ECFDF5',
   },
+  itemIconWrap: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#F3F4F6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  itemIconWrapActive: {
+    backgroundColor: '#D1FAE5',
+  },
   itemText: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#374151',
     fontWeight: '600',
+    flexShrink: 1,
   },
   itemTextActive: {
     color: '#059669',

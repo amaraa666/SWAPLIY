@@ -1,7 +1,15 @@
 import { Product } from '@/services/product-service';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from 'react';
-import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 const { height: SCREEN_H } = Dimensions.get('window');
 
@@ -22,8 +30,15 @@ export function ProductFeedCard({
   mode,
   descriptionNumberOfLines,
 }: ProductFeedCardProps) {
+  const [activeImageIndex, setActiveImageIndex] = React.useState(0);
+  const [imageContainerWidth, setImageContainerWidth] = React.useState(0);
   const descProps =
     descriptionNumberOfLines != null ? { numberOfLines: descriptionNumberOfLines } : {};
+  const hasMultipleImages = (product.images?.length || 0) > 1;
+
+  React.useEffect(() => {
+    setActiveImageIndex(0);
+  }, [product.id]);
 
   return (
     <View style={[styles.card, mode === 'swiper' ? styles.cardSwiper : styles.cardStandalone]}>
@@ -32,9 +47,56 @@ export function ProductFeedCard({
           styles.imageContainer,
           mode === 'swiper' ? styles.imageDeck : styles.imageStandalone,
         ]}
+        onLayout={(event) => {
+          const { width } = event.nativeEvent.layout;
+          if (width > 0 && width !== imageContainerWidth) {
+            setImageContainerWidth(width);
+          }
+        }}
       >
         {product.images && product.images.length > 0 ? (
-          <Image source={{ uri: product.images[0] }} style={styles.image} />
+          mode === 'standalone' && hasMultipleImages ? (
+            <>
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onMomentumScrollEnd={(event) => {
+                  if (!imageContainerWidth) {
+                    return;
+                  }
+                  const nextIndex = Math.round(
+                    event.nativeEvent.contentOffset.x / imageContainerWidth
+                  );
+                  setActiveImageIndex(nextIndex);
+                }}
+              >
+                {product.images.map((imageUri, index) => (
+                  <Image
+                    key={`${product.id}-image-${index}`}
+                    source={{ uri: imageUri }}
+                    style={[
+                      styles.image,
+                      imageContainerWidth > 0 ? { width: imageContainerWidth } : null,
+                    ]}
+                  />
+                ))}
+              </ScrollView>
+              <View style={styles.paginationDots}>
+                {product.images.map((_, index) => (
+                  <View
+                    key={`${product.id}-dot-${index}`}
+                    style={[
+                      styles.dot,
+                      index === activeImageIndex ? styles.dotActive : null,
+                    ]}
+                  />
+                ))}
+              </View>
+            </>
+          ) : (
+            <Image source={{ uri: product.images[0] }} style={styles.image} />
+          )
         ) : (
           <View style={[styles.image, styles.imagePlaceholder]}>
             <MaterialIcons name="image-not-supported" size={40} color="#D1D5DB" />
@@ -99,7 +161,7 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   cardSwiper: {
-    height: '85%',
+    height: '80%',
   },
   cardStandalone: {
     width: '100%',
@@ -124,6 +186,27 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  paginationDots: {
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+  },
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+    backgroundColor: 'rgba(255,255,255,0.55)',
+  },
+  dotActive: {
+    width: 16,
+    borderRadius: 4,
+    backgroundColor: '#FFFFFF',
   },
   infoBase: {
     padding: 16,
