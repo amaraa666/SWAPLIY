@@ -161,7 +161,9 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   cardSwiper: {
-    height: '80%',
+    flex: 1,
+    height: '100%',
+    width: '100%',
   },
   cardStandalone: {
     width: '100%',

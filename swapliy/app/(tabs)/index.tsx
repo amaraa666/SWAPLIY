@@ -181,13 +181,15 @@ export default function HomeScreen() {
 
   const renderProductCard = (product: Product) => {
     return (
-      <ProductFeedCard
-        product={product}
-        sellerProfileImage={sellerProfileImages[product.sellerId]}
-        onSellerPress={navigateToUserProfile}
-        mode="swiper"
-        descriptionNumberOfLines={3}
-      />
+      <View style={styles.cardWrapper}>
+        <ProductFeedCard
+          product={product}
+          sellerProfileImage={sellerProfileImages[product.sellerId]}
+          onSellerPress={navigateToUserProfile}
+          mode="swiper"
+          descriptionNumberOfLines={3}
+        />
+      </View>
     );
   };
 
@@ -214,11 +216,15 @@ export default function HomeScreen() {
             onSwipedRight={handleSwipedRight}
             onTapCard={() => {}}
             cardIndex={0}
-            backgroundColor="#F3F4F6"
+            backgroundColor="transparent"
+            showSecondCard
             stackSize={3}
-            stackSeparation={-50}
+            stackSeparation={14}
+            stackScale={5}
             verticalSwipe={false}
+            useViewOverflow
             containerStyle={styles.swiperContainer}
+            cardStyle={styles.swiperCard}
           />
 
           {/* Action Buttons */}
@@ -279,12 +285,25 @@ const styles = StyleSheet.create({
   },
   swiperContainer: {
     flex: 1,
-    marginTop: -30,
+    marginTop: -42,
     paddingHorizontal: 16,
+    paddingBottom: 100,
+    position: 'relative',
+    zIndex: 1,
+  },
+  swiperCard: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+  },
+  cardWrapper: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
   },
   actionButtons: {
     position: 'absolute',
-    bottom: -20,
+    bottom: 8,
     left: 0,
     right: 0,
     zIndex: 10,
@@ -292,7 +311,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 50,
-    paddingVertical: 20,
+    paddingVertical: 8,
     paddingHorizontal: 16,
   },
   rejectButton: {
