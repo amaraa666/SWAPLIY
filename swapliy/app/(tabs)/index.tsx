@@ -303,10 +303,10 @@ const styles = StyleSheet.create({
   },
   actionButtons: {
     position: 'absolute',
-    bottom: 8,
+    bottom: -5,
     left: 0,
     right: 0,
-    zIndex: 10,
+    zIndex: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
